@@ -11,8 +11,10 @@ public class Main extends JavaPlugin
     public void onEnable()
     {
         try {
-            BloomAPI.onLoadJsonLangFile();
             BloomAPI.onLoadMessageConfig();
+            BloomAPI.onLoadJsonLangFile();
+
+            System.out.println(BloomAPI.getLocaleMap("ko_kr").size());
         }
 
         catch (FileNotFoundException e) { e.printStackTrace(); }

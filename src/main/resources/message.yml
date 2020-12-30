@@ -2,10 +2,9 @@
 symbol: ❏
 
 message:
-  command:
-    colsole-not-support: "콘솔에서 지원하지 않는 명령어 입니다"
+  lang:
+    file-found: "Found a language pack",
+    file-not-found: "Could not found language pack"
 
-  system:
-    a: ssdsds
-    b: ssdsdsd
-    c: sdsdsd
+  command:
+    console-not-support: "This is unless the console supports it"

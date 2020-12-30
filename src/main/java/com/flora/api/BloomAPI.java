@@ -20,8 +20,8 @@ import java.util.*;
 public class BloomAPI
 {
     public static Plugin APIplugin = JavaPlugin.getPlugin(Main.class);
-    public static Map<String, JsonObject> langMap = new HashMap<>();
     public static Map<String, Object> messageMap = new HashMap<>();
+    private static final Map<String, JsonObject> langObjectMap = new HashMap<>();
 
 
 
@@ -41,13 +41,26 @@ public class BloomAPI
     }
 
 
+    /* Load Language Pack */
+    public static Map<String, String> getLocaleMap(String locale)
+    {
+        Map<String, String> localeMap = new HashMap<>();
+        
+        if (langObjectMap.get(locale) != null) {
+            for (Map.Entry<String, JsonElement> entry : langObjectMap.get(locale).entrySet())
+                localeMap.put(entry.getKey(), entry.getValue().getAsString());
+        }
+
+        return localeMap;
+    }
+
     public static void onLoadJsonLangFile() throws FileNotFoundException {
         int readCount = 0;
         File file = JavaPlugin.getPlugin(Main.class).getDataFolder();
         File[] files = file.listFiles();
 
         if (!(file.canRead())) {
-            System.out.println("발견된 언어 없음");
+            System.out.println(messageMap.get("message.lang.file-not-found"));
             return;
         }
 
@@ -64,9 +77,10 @@ public class BloomAPI
         }
 
         if (readCount < 1)
-            System.out.println("발견된 언어 없음");
+            System.out.println(messageMap.get("message.lang.file-not-found"));
         else
-            System.out.println("발견된 언어 있음 " + readCount + "개 발견");
+            System.out.println(messageMap.get("message.lang.file-found") + " (" + readCount + " file)");
+
     }
 
     private static boolean isJsonObject(String countryCode, File file) throws FileNotFoundException
@@ -74,9 +88,8 @@ public class BloomAPI
         JsonParser jsonParser = new JsonParser();
         JsonElement element = jsonParser.parse(new FileReader(file.getPath()));
 
-        if (element.isJsonObject())
-        {
-            langMap.put(countryCode, element.getAsJsonObject());
+        if (element.isJsonObject()) {
+            langObjectMap.put(countryCode, element.getAsJsonObject());
             return true;
         }
 
