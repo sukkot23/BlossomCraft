@@ -3,6 +3,7 @@ symbol: ❏
 
 message:
   lang:
+
     file-found: "Found a language pack",
     file-not-found: "Could not found language pack"
 

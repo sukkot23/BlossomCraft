@@ -13,8 +13,6 @@ public class Main extends JavaPlugin
         try {
             BloomAPI.onLoadMessageConfig();
             BloomAPI.onLoadJsonLangFile();
-
-            System.out.println(BloomAPI.getLocaleMap("ko_kr").size());
         }
 
         catch (FileNotFoundException e) { e.printStackTrace(); }
