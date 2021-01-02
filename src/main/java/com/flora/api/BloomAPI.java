@@ -123,39 +123,45 @@ public class BloomAPI
     /* Get Locale Name */
     public static String getLocaleName(NamespacedKey key)
     {
-        return null;
+        return key.getKey();
     }
 
     public static String getLocaleName(NamespacedKey key, String locale)
     {
         String rKey = getIsBlockItem(key) + "." + key.getNamespace() + "." + key.getKey();
 
-        if (langMap.get(locale) != null)
-        {
-            return langMap.get(locale).get(rKey);
+        if (langMap.get(locale) != null) {
+            if (langMap.get(locale).get(rKey) != null)
+                return langMap.get(locale).get(rKey);
+            else
+                return null;
         }
-        else
-        {
-
+        else {
+            return getLocaleName(key);
         }
-
-
-        return null;
     }
 
     public static String getLocaleName(Material material)
     {
-
-
-        return null;
+        return material.name();
     }
 
     public static String getLocaleName(Material material, String locale)
     {
+        String rKey = getIsBlockItem(material) + "." + material.getKey().getNamespace() + "." + material.getKey().getKey();
 
-
-        return null;
+        if (langMap.get(locale) != null) {
+            if (langMap.get(locale).get(rKey) != null)
+                return langMap.get(locale).get(rKey);
+            else
+                return null;
+        }
+        else {
+            return getLocaleName(material);
+        }
     }
+
+
 
     private static String getIsBlockItem(NamespacedKey key)
     {
