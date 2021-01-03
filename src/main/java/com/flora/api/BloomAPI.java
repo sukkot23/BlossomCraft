@@ -191,12 +191,12 @@ public class BloomAPI
 
 
     /* Message Config */
-    public static FileConfiguration getCustomConfig(String fileName)
+    public static FileConfiguration getCustomConfig(Plugin plugin, String fileName)
     {
-        File file = new File(APIplugin.getDataFolder(), fileName);
+        File file = new File(plugin.getDataFolder(), fileName);
 
         if (!(file.canRead())) {
-            try { FileUtils.copyInputStreamToFile(Objects.requireNonNull(APIplugin.getResource(fileName)), file); }
+            try { FileUtils.copyInputStreamToFile(Objects.requireNonNull(plugin.getResource(fileName)), file); }
             catch (IOException e) { e.printStackTrace(); }
         }
 
@@ -207,7 +207,7 @@ public class BloomAPI
 
     public static void onLoadMessageConfig()
     {
-        FileConfiguration config = getCustomConfig("message.yml");
+        FileConfiguration config = getCustomConfig(APIplugin, "message.yml");
         Set<String> list = Objects.requireNonNull(config.getConfigurationSection("")).getKeys(true);
 
         for (String a : list)
