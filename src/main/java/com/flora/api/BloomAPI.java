@@ -71,8 +71,7 @@ public class BloomAPI
         return false;
     }
 
-    private static void setLangMap()
-    {
+    private static void setLangMap() {
         for (String localeCode : langObjectMap.keySet()) {
             Map<String, String> keyMap = new HashMap<>();
 
@@ -84,8 +83,7 @@ public class BloomAPI
     }
 
     @Deprecated
-    public static Map<String, String> getLocaleMap(String locale)
-    {
+    public static Map<String, String> getLocaleMap(String locale) {
         Map<String, String> localeMap = new HashMap<>();
 
         if (langObjectMap.get(locale) != null) {
@@ -126,8 +124,7 @@ public class BloomAPI
         return key.getKey();
     }
 
-    public static String getLocaleName(NamespacedKey key, String locale)
-    {
+    public static String getLocaleName(NamespacedKey key, String locale) {
         String rKey = getIsBlockItem(key) + "." + key.getNamespace() + "." + key.getKey();
 
         if (langMap.get(locale) != null) {
@@ -146,8 +143,7 @@ public class BloomAPI
         return material.name();
     }
 
-    public static String getLocaleName(Material material, String locale)
-    {
+    public static String getLocaleName(Material material, String locale) {
         String rKey = getIsBlockItem(material) + "." + material.getKey().getNamespace() + "." + material.getKey().getKey();
 
         if (langMap.get(locale) != null) {
@@ -163,8 +159,7 @@ public class BloomAPI
 
 
 
-    private static String getIsBlockItem(NamespacedKey key)
-    {
+    private static String getIsBlockItem(NamespacedKey key) {
         if (Material.matchMaterial(key.getKey()) != null) {
             Material material = Material.matchMaterial(key.getKey());
             assert material != null;
@@ -175,8 +170,7 @@ public class BloomAPI
         return null;
     }
 
-    private static String getIsBlockItem(Material material)
-    {
+    private static String getIsBlockItem(Material material) {
         if (material.isBlock())
             return "block";
 
@@ -188,30 +182,41 @@ public class BloomAPI
 
 
 
-
-
     /* Message Config */
-    public static FileConfiguration getCustomConfig(Plugin plugin, String fileName)
-    {
-        File file = new File(plugin.getDataFolder(), fileName);
-
-        if (!(file.canRead())) {
-            try { FileUtils.copyInputStreamToFile(Objects.requireNonNull(plugin.getResource(fileName)), file); }
-            catch (IOException e) { e.printStackTrace(); }
-        }
-
-        return YamlConfiguration.loadConfiguration(file);
-
-        /* 참고자료 : https://soft.plusblog.co.kr/116 - inputStream 객체 File 객체로 변환 */
-    }
-
-    public static void onLoadMessageConfig()
-    {
+    public static void onLoadMessageConfig() {
         FileConfiguration config = getCustomConfig(APIplugin, "message.yml");
         Set<String> list = Objects.requireNonNull(config.getConfigurationSection("")).getKeys(true);
 
         for (String a : list)
             if (!(config.get(a) instanceof MemorySection))
                 messageMap.put(a, config.get(a));
+    }
+
+
+
+
+    /* Custom Config */
+    public static File getCustomFile(Plugin plugin, String fileName) {
+        File file = new File(plugin.getDataFolder(), fileName);
+
+        if (!(file.canRead())) {
+            try {
+                FileUtils.copyInputStreamToFile(Objects.requireNonNull(plugin.getResource(fileName)), file); }
+            catch (IOException e) { System.out.println("[API] File I/O Exception"); }
+            catch (NullPointerException e) { System.out.println("[API] File Not Found Exception"); }
+        }
+
+        return file;
+
+        /* 참고자료 : https://soft.plusblog.co.kr/116 - inputStream 객체 File 객체로 변환 */
+    }
+
+    public static FileConfiguration getCustomConfig(Plugin plugin, String fileName) {
+        return YamlConfiguration.loadConfiguration(getCustomFile(plugin, fileName));
+    }
+
+    public static void saveCustomConfig(File file, FileConfiguration config) {
+        try { config.save(file); }
+        catch (IOException e) { e.printStackTrace(); }
     }
 }
