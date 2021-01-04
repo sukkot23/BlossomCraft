@@ -211,9 +211,15 @@ public class BloomAPI
         /* 참고자료 : https://soft.plusblog.co.kr/116 - inputStream 객체 File 객체로 변환 */
     }
 
+    @Deprecated
     public static FileConfiguration getCustomConfig(Plugin plugin, String fileName) {
         return YamlConfiguration.loadConfiguration(getCustomFile(plugin, fileName));
     }
+
+    public static FileConfiguration getCustomConfig(File file) {
+        return YamlConfiguration.loadConfiguration(file);
+    }
+
 
     public static void saveCustomConfig(File file, FileConfiguration config) {
         try { config.save(file); }
